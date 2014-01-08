@@ -1,0 +1,18 @@
+{
+    "name": "noccylabs/sdl",
+    "type": "library",
+    "description": "Simple Declarative Language (SDL)",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "NoccyLabs",
+            "email": "noccylabs@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": { "": "src/" }
+    }
+}
