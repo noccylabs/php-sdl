@@ -1,0 +1,9 @@
+person {
+    name "John Doe"
+    age 33
+    location "Liverpool" country="UK"
+    hobbies {
+        "Fishing"
+        "Forking"
+    }
+}
