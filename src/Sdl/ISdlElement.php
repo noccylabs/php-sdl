@@ -21,12 +21,16 @@
 namespace Sdl;
 
 /**
- *
+ * SDL Element Interface
+ * 
  * @author noccy
  */
-interface ISdlTag
+interface ISdlElement
 {
+    
     public function encodeTag();
+    
     public function getValue();
+    
     public function setValue($value);
 }

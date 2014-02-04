@@ -33,16 +33,19 @@ use Sdl\LiteralType\SdlDate;
 
 $tag = SdlTag::createRoot()
     ->createChild("people")
+        
         ->createComment("Person 1: John Doe")
         ->createChild("person")
             ->setValue("John Doe")
             ->setAttribute("sex","male")
             ->end()
+        
         ->createComment("Person 2: Jane Doe")
         ->createChild("person")
             ->setValue("Jane Doe")
             ->setAttribute("sex","female")
             ->end()
+        
         ->createComment("Person 3: Uncle Doe")
         ->createChild("person")
             ->setValue("Uncle Doe")
@@ -54,5 +57,6 @@ $tag = SdlTag::createRoot()
                 ->setValuesFromArray(["Bob Doe", "Francis Doe"])
                 ->end()
             ->end()
+        
         ->end();
 echo $tag->encode();

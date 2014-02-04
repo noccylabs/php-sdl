@@ -23,12 +23,12 @@ namespace Sdl;
 use Sdl\Exception\ParserException;
 
 /**
- * 
+ * SDL Tag Element
  * 
  * 
  * 
  */
-class SdlTag implements ISdlTag
+class SdlTag implements ISdlElement
 {
 
     private $tag_name;
@@ -96,9 +96,10 @@ class SdlTag implements ISdlTag
     }
     
     /**
+     * Get an attribute from the tag.
      * 
-     * @param type $attribute
-     * @return null
+     * @param string $attribute
+     * @return null|mixed The attribute
      */
     public function getAttribute($attribute)
     {
@@ -110,9 +111,10 @@ class SdlTag implements ISdlTag
     }
     
     /**
+     * Create or update an attribute with a new value
      * 
-     * @param type $attribute
-     * @param type $value
+     * @param string $attribute
+     * @param mixed $value
      * @return \Sdl\SdlTag
      */
     public function setAttribute($attribute,$value)
@@ -126,6 +128,11 @@ class SdlTag implements ISdlTag
         return $this;
     }
 
+    /**
+     * Remove an attribute from the tag
+     * 
+     * @param string $attribute
+     */
     public function removeAttribute($attribute)
     {
         // TODO: Implement
@@ -134,7 +141,7 @@ class SdlTag implements ISdlTag
     /**
      * Set the first value (this[0]) to the specified value.
      * 
-     * @param type $value
+     * @param mixed $value
      */
     public function setValue($value)
     {
@@ -149,8 +156,8 @@ class SdlTag implements ISdlTag
     /**
      * Set a value at a specific index
      * 
-     * @param type $index
-     * @param type $value
+     * @param int $index
+     * @param mixed $value
      * @return \Sdl\SdlTag
      */
     public function setValueAt($index,$value)
@@ -163,6 +170,12 @@ class SdlTag implements ISdlTag
         return $this;
     }
     
+    /**
+     * Assign the values of the tag from the array passed.
+     * 
+     * @param array $values The values to assign
+     * @return \Sdl\SdlTag
+     */
     public function setValuesFromArray(array $values)
     {
         $this->values = [];
@@ -174,6 +187,12 @@ class SdlTag implements ISdlTag
         
     }
     
+    /**
+     * Get the first value, or the value at the specified index.
+     * 
+     * @param int $index 
+     * @return mixed The value at the specified index (default: 0)
+     */
     public function getValue($index = 0)
     {
         if ($index < count($this->values))
@@ -182,6 +201,11 @@ class SdlTag implements ISdlTag
         }
     }
     
+    /**
+     * Get all values from this tag.
+     * 
+     * @return array The values
+     */
     public function getAllValues()
     {
         return array_map(function($obj){
@@ -189,17 +213,34 @@ class SdlTag implements ISdlTag
         }, $this->values);
     }
     
+    /**
+     * Check if the tag has children.
+     * 
+     * @return bool True if the tag has child tags
+     */
     public function hasChildren()
     {
+        // TODO: Skip the comment nodes?
         return (count($this->children)>0);
     }
     
-    public function getChildren()
+    /**
+     * Return an array of all the child tags.
+     * 
+     * @return array Array of child tags
+     */
+    public function getAllChildren()
     {
-        return $this->children;
+        return (array)$this->children;
     }
     
-    public function addChild(ISdlTag $tag)
+    /**
+     * Add a child tag to the tag.
+     * 
+     * @param \Sdl\ISdlElement $tag Child tag to add
+     * @return \Sdl\SdlTag
+     */
+    public function addChild(ISdlElement $tag)
     {
         if (!($tag instanceof SdlComment))
         {
@@ -209,12 +250,23 @@ class SdlTag implements ISdlTag
         return $this;
     }
     
+    /**
+     * Create and return a new SDL root tag.
+     * 
+     * @return SdlTag A newly created root tag
+     */
     public static function createRoot()
     {
         $tag = new self;
         return $tag;
     }
     
+    /**
+     * Create a new tag and add it as a child to the current tag.
+     * 
+     * @param string $tagname
+     * @return SdlTag The newly created child tag
+     */
     public function createChild($tagname)
     {
         $tag = new self;
@@ -224,6 +276,12 @@ class SdlTag implements ISdlTag
         return $tag;
     }
     
+    /**
+     * Create a new comment element and add it as a child to the current tag.
+     * 
+     * @param string $text The comment text
+     * @return \Sdl\SdlTag
+     */
     public function createComment($text)
     {
         $comment = new SdlComment();
@@ -232,16 +290,32 @@ class SdlTag implements ISdlTag
         return $this;
     }
     
+    /**
+     * Return to the parent context (alias of getParent())
+     * 
+     * @return SdlTag The parent tag
+     */
     public function end()
     {
         return $this->getParent();
     }
     
+    /**
+     * Return the parent tag.
+     * 
+     * @return SdlTag The parent tag
+     */
     public function getParent()
     {
         return $this->parent_tag;
     }
     
+    /**
+     * Set the parent tag
+     * 
+     * @param \Sdl\SdlTag $parent The parent tag
+     * @return \Sdl\SdlTag
+     */
     public function setParent(SdlTag $parent)
     {
         $this->parent_tag = $parent;
@@ -274,7 +348,8 @@ class SdlTag implements ISdlTag
     }
     
     /**
-     * Encode the tag and its children into valid Sdl.
+     * Encode the tag and its children into valid Sdl. Called by the encode()
+     * method.
      * 
      * @return string
      */
@@ -301,6 +376,11 @@ class SdlTag implements ISdlTag
         return $string;
     }
     
+    /**
+     * Encode the children of the tag into a string
+     * 
+     * @return string The encoded children of this tag
+     */
     public function encode()
     {
         if (count($this->children)>0)

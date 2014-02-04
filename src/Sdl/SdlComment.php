@@ -21,11 +21,11 @@
 namespace Sdl;
 
 /**
- * Description of SdlComment
+ * SDL Comment Element
  *
  * @author noccy
  */
-class SdlComment implements ISdlTag
+class SdlComment implements ISdlElement
 {
     const STYLE_PHP = "//";
     const STYLE_HASH = "#";
@@ -34,31 +34,54 @@ class SdlComment implements ISdlTag
     private $value;
     private static $comment_style = self::STYLE_HASH;
     
+    /**
+     * 
+     * @return string Tag name is always "@COMMENT" for comments
+     */
     public function getTagName()
     {
         return "@COMMENT";
     }
     
+    /**
+     * Set the comment style to one of the SdlComment::STYLE_* consts.
+     * 
+     * @param string $style The comment style to use (//, # or --)
+     * @throws Exception
+     */
     public static function setCommentStyle($style)
     {
-        if (in_array($style,[self::STYLE_PHP,self::STYLE_HASH,self::STYLE_DASH]))
+        if (!in_array($style,[self::STYLE_PHP,self::STYLE_HASH,self::STYLE_DASH]))
         {
-            self::$comment_style = $style;
-            return;
+            throw new Exception("Invalid comment style");
         }
-        throw new Exception("Invalid comment style");
+        self::$comment_style = $style;
     }
     
+    /**
+     * Set the comment text
+     * 
+     * @param string $value The comment text
+     */
     public function setValue($value)
     {
         $this->value = (string)$value;
     }
     
+    /**
+     * Get the comment text
+     * 
+     * @return string The comment text
+     */
     public function getValue()
     {
         return $this->value;
     }
     
+    /**
+     * 
+     * @return string The encoded comment tag
+     */
     public function encodeTag()
     {
         return join(" ",[self::$comment_style,$this->getValue(0)]);
