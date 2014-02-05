@@ -58,7 +58,7 @@ adding your children.
 To parse a file, use the `Sdl\Parser\SdlParser` class. It offers a few different
 methods to parse content and return `Sdl\SdlTag` objects.
 
-*IMPLEMENTED but MISSING TESTS in php-sdl 2.0!*
+*PARTIALLY IMPLEMENTED in php-sdl 2.0!*
 
         use Sdl\Parser\SdlParser;
         // Parse a file

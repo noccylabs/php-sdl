@@ -31,7 +31,7 @@ class SdlParser
     const CONTENT_TAG = "content";
     const ROOT_TAG = "root";
     
-    public function __construct()
+    protected function __construct()
     {
     }
     
