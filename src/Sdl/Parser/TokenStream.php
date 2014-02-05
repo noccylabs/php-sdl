@@ -57,16 +57,16 @@ class TokenStream implements \Iterator, \Countable
         }
         foreach($tokens as $token)
         {
-            $this->tokens[] = Token::createFromPhpToken($token);
+            $this->tokens[] = ParserToken::createFromPhpToken($token);
         }
     }
 
-    public function addToken(Token $token)
+    public function addToken(ParserToken $token)
     {
         $this->tokens[] = $token;
     }
     
-    public function pushToken(Token $token)
+    public function pushToken(ParserToken $token)
     {
         array_unshift($this->tokens, $token);
     }
@@ -91,7 +91,7 @@ class TokenStream implements \Iterator, \Countable
         return $out;
     }
     
-    private function matchToken(Token $token, $match)
+    private function matchToken(ParserToken $token, $match)
     {
         if (is_array($match))
         {

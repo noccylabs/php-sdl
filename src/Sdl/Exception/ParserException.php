@@ -20,6 +20,9 @@
 
 namespace Sdl\Exception;
 
+/**
+ * Throw during the parsing process if the data being parsed is not valid.
+ */
 class ParserException extends SdlException
 {    
     const ERR_INVALID_IDENTIFIER = 1;

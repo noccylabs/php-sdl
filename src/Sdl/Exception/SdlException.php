@@ -20,6 +20,9 @@
 
 namespace Sdl\Exception;
 
+/**
+ * Base exception class for PhpSdl
+ */
 class SdlException extends \Exception
 {    
 }

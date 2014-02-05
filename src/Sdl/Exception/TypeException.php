@@ -21,9 +21,8 @@
 namespace Sdl\Exception;
 
 /**
- * Description of TypeException
+ * Throw in response to unexpected value types being expected
  *
- * @author noccy
  */
 class TypeException extends SdlException
 {

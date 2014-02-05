@@ -20,8 +20,12 @@
 
 namespace Sdl\LiteralType;
 
+/**
+ * LiteralType for an SDL String
+ */
 class SdlString extends LiteralType
 {
+    public static $match_pattern = "/^\"(.*)\"$/ms";
     
     private $value;
     

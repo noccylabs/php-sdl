@@ -20,9 +20,18 @@
 
 namespace Sdl\LiteralType;
 
+/**
+ * LiteralType for a Boolean value.
+ * 
+ * Accepted tokens: off, false, no (parsed as false) and on, true, yes (parsed
+ * as true)
+ *
+ */
 class SdlBoolean extends LiteralType
 {
 
+    public static $match_pattern = "/^(yes|no|true|false|on|off)$/i";
+    
     private $value;
     
     public function setValue($value)

@@ -1,5 +1,5 @@
 package {
-    app:name "foo.foopackage"
+    package:name "foo.foopackage"
     depends {
         package "foo.barpackage" version="2.*"
         package "bar.bazpackage"

@@ -53,8 +53,10 @@ class TypeFactoryTest extends \PHPUnit_Framework_TestCase
         $int_type = TypeFactory::createFromPhpValue((int)42);
         $this->assertEquals("SdlInteger", $int_type->getType());
         // Test floats
+        $double_type = TypeFactory::createFromPhpValue((double)4.2);
+        $this->assertEquals("SdlDouble", $double_type->getType());
         $float_type = TypeFactory::createFromPhpValue((float)4.2);
-        $this->assertEquals("SdlFloat", $float_type->getType());
+        $this->assertEquals("SdlDouble", $float_type->getType());
         // Test booleans
         $bool_type = TypeFactory::createFromPhpValue(true);
         $this->assertEquals("SdlBoolean", $bool_type->getType());

@@ -1,7 +1,6 @@
 <?php
-
 /* 
- * Copyright (C) 2014 NoccyLabs.info
+ * Copyright (C) 2014 noccy
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,34 +17,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Sdl\LiteralType;
+require_once __DIR__."/../vendor/autoload.php";
 
-class SdlInteger extends LiteralType
-{
+use Sdl\Parser\SdlParser;
 
-    static $match_pattern = "/^[\+\-]{0,1}[0-9]*$/";
-    
-    private $value;
-    
-    public function setValue($value)
-    {
-        $this->value = (int)$value;
-    }
-    
-    public function getValue()
-    {
-        return $this->value;
-        
-    }
-    
-    public function setSdlLiteral($string)
-    {
-        $this->value = (int)$string;
-    }
-    
-    public function getSdlLiteral()
-    {
-        return $this->value;
-    }
-    
-}
+$tag = SdlParser::parseFile(__DIR__."/complex.sdl");
+
+$packages = $tag
+        ->getChildrenByTagName("package");
+$pkg_name = $packages[0]
+        ->getChildrenByTagName("package:name")[0]
+        ->getValue();
+echo "Package name: {$pkg_name}\n";
+
+

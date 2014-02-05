@@ -30,7 +30,6 @@ use Sdl\Exception\ParserException;
  */
 class SdlTag implements ISdlElement
 {
-
     private $tag_name;
     private $tag_namespace;
     private $parent_tag;
@@ -222,7 +221,7 @@ class SdlTag implements ISdlElement
     }
     
     /**
-     * Check if the tag has children.
+     * Check if the tag has children (including comments)
      * 
      * @return bool True if the tag has child tags
      */
@@ -240,6 +239,23 @@ class SdlTag implements ISdlElement
     public function getAllChildren()
     {
         return (array)$this->children;
+    }
+    
+    /**
+     * Get the child tags that match the given tag name. This only operates on
+     * direct children and not recursively.
+     * 
+     * @param string $tagname The tag name to match
+     * @return array[Sdl\SdlTag] The matching children
+     */
+    public function getChildrenByTagName($tagname)
+    {
+        return (array)array_map(function($tag) use($tagname) {
+            if ($tag->getTagName() == $tagname)
+            {
+                return $tag;
+            }
+        }, $this->children);
     }
     
     /**

@@ -30,20 +30,47 @@ and what is not.
 | `Sdl\Parser\SdlParser`        | Parsing tags and nested tags | WORKING    |
 | `Sdl\Parser\SdlParser`        | Parsing tags with comments   |            |
 | `Sdl\Parser\SdlParser`        | Tests implemented            | PARTIAL    |
+| `Sdl\LiteralType\TypeFactory` | LiteralType registering      | PARTIAL    |
+| `Sdl\LiteralType\TypeFactory` | Tests implemented            | PARTIAL    |
 | `Sdl\LiteralType\*Type`       | All types implemented        |            |
 | `Sdl\LiteralType\*Type`       | Tests implemented            | PARTIAL    |
 | `Sdl\Selector\SdlSelector`    | Selecting with expressions   |            |
 | `Sdl\Selector\SdlSelector`    | Tests implemented            |            |
 
+### Performance
+
+The parser is currently a little slow at reading, but this can probably be
+optimized somewhat. Either way it offers a tidy alternative to the established
+serialization formats (XML, JSON and YAML). It is important to remember that
+the parsers for XML, JSON and YAML are running as native code, while the SDL
+parser is written in PHP.
+
+| **Format** | **Parser**              | **10000 its**   | **Its/s** | **100 its**  |
+|:----------:|:------------------------|----------------:|----------:|-------------:|
+| XML        | DomDocument::loadXml    | 0.35 seconds    | 28984.5   | 0.003s       |
+| SDL        | SdlParser::parseFile    | 4.79 seconds    | 2089.9    | 0.048s       |
+| SDL        | SdlParser::parseString  | 4.47 seconds    | 2235.4    | 0.045s       |
+| JSON       | json_decode             | 0.25 seconds    | 39920.6   | 0.003s       |
+| YAML       | yaml_parse_file         | 0.45 seconds    | 22437.3   | 0.004s       |
+
+Some possible improvements and optimizations include:
+
+ * Caching of parsed structures on filesystem or in memcached.
+ * Improvements to the pre-parser optimization routines.
+ * Rewrite the parser using regular expressions (could be faster, could be slower)
+
 ## Examples
 
 ### Generating tag trees
 
-*IMPLEMENTED in php-sdl 2.0*
+Generating is simple. Get a new root tag with `createRoot()` and start 
+adding your children. You can use the same fluid programming as you are used
+to from Symfony2, where all the `setX()` methods return the current tag, and
+a call to `end()` returns the parent node. `createChild()` is available to
+create a tag, add it as a child to the current node, and return the newly
+created child tag.
 
-Generating is as simple. Get a new root tag with `createRoot()` and start 
-adding your children.
-
+        use Sdl\SdlTag;
         $tag = SdlTag::createRoot()
             ->createChild("people")
                 ->createChild("person")
@@ -53,34 +80,71 @@ adding your children.
                 ->end();
         echo $tag->encode();
 
-### Navigating children
+Values and attributes can be assigned from PHP values, or directly via any of the
+`LiteralType` descendants. 
 
-*Not yet implemented in php-sdl 2.0!*
+        use Sdl\SdlTag;
+        use Sdl\LiteralType\SdlBinary;
+        $tag = SdlTag::createRoot()
+            ->createChild("image")
+                ->setValue(new SdlBinary($file))
+                ->setAttribute("type","image/jpeg")
+                ->end();
 
-        $people = $tag->getChildByTagName("people")->getAllChildren();
-        echo "Person name: ".$people[0]->getValue()."\n";
+Remember to match your calls to `end()` to make sure you return the root 
+element when you are using the fluid method calls on a new root or non-variable:
 
-### Enumeration
-
-*IMPLEMENTED in php-sdl 2.0*
-
-        // Enumerate children
-        foreach($tag->getAllChildren() as $ctag) {
-            printf("Tag: %s\n", $ctag->getTagName());
-        }
+        use Sdl\SdlTag;
+        $tag = SdlTag::createRoot();
+        $tag->createChild("foo")->createChild("bar");
+        // $tag will still point to the root even though end() wasn't called.
+        $bad = SdlTag::createRoot()->createChild("foo")->createChild("bar");
+        // $bad will be pointing to "bar" here, not the root.
 
 ### Parsing a file
 
 To parse a file, use the `Sdl\Parser\SdlParser` class. It offers a few different
 methods to parse content and return `Sdl\SdlTag` objects.
 
-*PARTIALLY IMPLEMENTED in php-sdl 2.0!*
-
         use Sdl\Parser\SdlParser;
         // Parse a file
         $tag = SdlParser::parseFile("basic.sdl");
         // Parse a string
         $tag = SdlParser::parseString($sdl_string);
+
+### Encoding tags to SDL
+
+        use Sdl\SdlTag;
+        // Create a new root
+        $tag = SdlTag::createRoot();
+        // Add two children
+        $tag->addChild("foo")->setValuesFromArray([0, 1, 2 ]);
+        $tag->addChild("bar")->setValuesFromArray([2, 3, 4 ]);
+        // Output the final SDL
+        echo $tag->encode();
+
+### Navigating children
+
+You can use `getAllChildren()`, `getChildrenByTagName(..)` to navigate the tree.
+
+The `SdlSelector` will provide a more convenient approach to querying the tree
+with logical expressions.
+
+        use Sdl\Parser\SdlParser;
+        $tag = SdlTag::createRoot();
+        $tag->createChild("people")
+            ->createChild("person")
+                ->setValue("John Doe")
+                ->setAttribute("sex","male");
+        $people = $tag->getChildrenByTagName("people")[0]->getAllChildren();
+        echo "Person name: ".$people[0]->getValue()."\n";
+
+*PARTIALLY IMPLEMENTED in php-sdl 2.0*
+
+        // Enumerate children
+        foreach($tag->getAllChildren() as $ctag) {
+            printf("Tag: %s\n", $ctag->getTagName());
+        }
 
 ### Queries
 

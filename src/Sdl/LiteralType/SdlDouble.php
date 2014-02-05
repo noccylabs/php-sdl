@@ -20,9 +20,13 @@
 
 namespace Sdl\LiteralType;
 
+/**
+ * LiteralType for an SDL Double
+ */
 class SdlDouble extends LiteralType
 {
-
+    public static $match_pattern = "/^[\+\-]{0,1}[0-9]*\.[0-9]*d?$/i";
+    
     private $value;
     
     public function setValue($value)

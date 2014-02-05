@@ -20,9 +20,13 @@
 
 namespace Sdl\LiteralType;
 
+/**
+ * LiteralType for an SDL Date
+ */
 class SdlDate extends LiteralType
 {
-
+    public static $match_pattern = "/^([0-9]{4})\/([0-9]{2})\/([0-9]{2})$/";
+    
     private $value;
     
     public function setValue($value)

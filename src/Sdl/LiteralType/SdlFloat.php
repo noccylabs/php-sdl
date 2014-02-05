@@ -22,6 +22,8 @@ namespace Sdl\LiteralType;
 
 class SdlFloat extends LiteralType
 {
+    
+    public static $match_pattern = "/^[\+\-]{0,1}[0-9]*f$/i";
 
     private $value;
     

@@ -25,7 +25,7 @@ namespace Sdl\Parser;
  * 
  * 
  */
-class Token
+class ParserToken
 {
     private $token = null;
     private $string = null;
@@ -50,17 +50,17 @@ class Token
      * 
      * @static
      * @param string|array $token The token as a single string or array
-     * @return \Sdl\Parser\Token
+     * @return \Sdl\Parser\ParserToken
      */
     public static function createFromPhpToken($token)
     {
         if (is_array($token))
         {
-            return new Token($token[0],$token[1],$token[2]);
+            return new ParserToken($token[0],$token[1],$token[2]);
         }
         else
         {
-            return new Token(null, $token);
+            return new ParserToken(null, $token);
         }
         
     }
@@ -69,7 +69,7 @@ class Token
      * Set the token id
      * 
      * @param int $token The token id
-     * @return \Sdl\Parser\Token
+     * @return \Sdl\Parser\ParserToken
      */
     public function setToken($token)
     {
@@ -81,7 +81,7 @@ class Token
      * Set the token string
      * 
      * @param string $string The token string
-     * @return \Sdl\Parser\Token
+     * @return \Sdl\Parser\ParserToken
      */
     public function setString($string)
     {
@@ -93,7 +93,7 @@ class Token
      * Set the line number
      * 
      * @param int $line The line number
-     * @return \Sdl\Parser\Token
+     * @return \Sdl\Parser\ParserToken
      */
     public function setLineNumber($line)
     {

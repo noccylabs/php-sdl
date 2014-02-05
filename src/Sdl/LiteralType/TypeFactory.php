@@ -20,29 +20,109 @@
 
 namespace Sdl\LiteralType;
 
-use Sdl\Parser\Token;
+use Sdl\Parser\ParserToken;
 
+/**
+ * The TypeFactory is used to convert tokens (raw strings, with or without
+ * quotes depending on type) into their respective LiteralType derived classes.
+ * The mapping is done in a dynamic way, with the classes registered by the
+ * registerDefaultTypes() and/or registerLiteralType() static methods.
+ * 
+ * To convert a SDL literal token, use the createFromString() method.
+ * 
+ * It can also be used to convert PHP variables into their respective SDL type
+ * using the createFromPhpValue() method.
+ * 
+ */
 abstract class TypeFactory
 {
 
-    const RE_STRING = "/^\"(.*)\"$/ms";
-    const RE_RAWSTRING = "/^`(.*)`$/ms";
-    const RE_BINARY = "/^\[(.*)\]$/m";
-    const RE_CHAR = "/^\'.\'$/";
-    const RE_INT = "/^[\+\-]{0,1}[0-9]*$/";
-    const RE_LONGINT = "/^[\+\-]{0,1}[\.0-9]*l$/i";
-    const RE_FLOAT = "/^[\+\-]{0,1}[0-9]*f$/i";
-    const RE_DFLOAT = "/^[\+\-]{0,1}[0-9]*\.[0-9]*[d]?$/i";
-    const RE_DECIMAL = "/^[\+\-]{0,1}[\.0-9]*bd$/i";
-    const RE_DATETIME = "/^([0-9]{4})\/([0-9]{2})\/([0-9]{2}) ([0-9]{2}):([0-9]{2})(:[0-9]{2}(\.[0-9]{1,3}([\-]{0,1}.*)?)?)?$/";
-    const RE_DATE = "/^([0-9]{4})\/([0-9]{2})\/([0-9]{2})$/";
-    const RE_TIME = "/^([0-9]{0,5}d\:){0,1}([0-9]{0,5}:){0,1}([0-9]{1,2}):([0-9]{1,2})(\.[0-9]{1,3})?$/";
 
-    public static function createFromToken(Token $token)
+
+    private static $types = [];
+    private static $php_types = [];
+    
+    /**
+     * Register default types for the parser. Should be called manually if you
+     * wish to append (or prepend) your own literal types to the list of
+     * known types.
+     * 
+     *   OK  string
+     *   OK  boolean
+     *       const RE_RAWSTRING = "/^`(.*)`$/ms";
+     *       const RE_BINARY = "/^\[(.*)\]$/m";
+     *       const RE_CHAR = "/^\'.\'$/";
+     *   OK  integer
+     *       const RE_LONGINT = "/^[\+\-]{0,1}[\.0-9]*l$/i";
+     *   OK  float
+     *   OK  double
+     *       decimal
+     *       const RE_DATETIME = "/^([0-9]{4})\/([0-9]{2})\/([0-9]{2}) ([0-9]{2}):([0-9]{2})(:[0-9]{2}(\.[0-9]{1,3}([\-]{0,1}.*)?)?)?$/";
+     *       const RE_DATE = "/^([0-9]{4})\/([0-9]{2})\/([0-9]{2})$/";
+     *       const RE_TIME = "/^([0-9]{0,5}d\:){0,1}([0-9]{0,5}:){0,1}([0-9]{1,2}):([0-9]{1,2})(\.[0-9]{1,3})?$/";
+     * 
+     */
+    public static function registerDefaultTypes()
+    {
+        //self::registerLiteralType("Sdl\\LiteralType\\SdlBinary");
+        self::registerLiteralType("Sdl\\LiteralType\\SdlBoolean",  "boolean");
+        self::registerLiteralType("Sdl\\LiteralType\\SdlString",   "string");
+        //self::registerLiteralType("Sdl\\LiteralType\\SdlRawString");
+        //self::registerLiteralType("Sdl\\LiteralType\\SdlCharacter");
+        //self::registerLiteralType("Sdl\\LiteralType\\SdlLongInt");
+        self::registerLiteralType("Sdl\\LiteralType\\SdlInteger",  "integer");
+        self::registerLiteralType("Sdl\\LiteralType\\SdlFloat");
+        self::registerLiteralType("Sdl\\LiteralType\\SdlDecimal");
+        self::registerLiteralType("Sdl\\LiteralType\\SdlDouble",   "double");
+        //self::registerLiteralType("Sdl\\LiteralType\\SdlDateTime");
+        self::registerLiteralType("Sdl\\LiteralType\\SdlDate");
+        //self::registerLiteralType("Sdl\\LiteralType\\SdlTimeSpan");
+    }
+    
+    /**
+     * Register a class as a literal type. 
+     * 
+     * @param type $class
+     * @throws \Sdl\Exception\SdlException
+     */
+    public static function registerLiteralType($class,$php_type=null)
+    {
+        if (get_parent_class($class) != "Sdl\\LiteralType\\LiteralType")
+        {
+            throw new \Sdl\Exception\SdlException("Class passed to registerLiteralType must extend Sdl\\LiteralType\\LiteralType.");
+        }
+        if (empty($class::$match_pattern))
+        {
+            throw new \Sdl\Exception\SdlException("LiteralType needs static property \$match_pattern");
+        }
+        self::$types[$class::$match_pattern] = $class;
+        if ($php_type)
+        {
+            self::$php_types[$php_type] = $class;
+        }
+    }
+
+    /**
+     * Convert a parser token into a LiteralToken.
+     * 
+     * @param \Sdl\Parser\ParserToken $token
+     * @return SdlLiteral The literal, from createFromString
+     */
+    public static function createFromToken(ParserToken $token)
     {
         return self::createFromString($token->getString());
     }
 
+    /**
+     * Convert a string into a LiteralType. If a LiteralType is passed, it will
+     * be returned unmodified. 
+     * 
+     * If no types have been registered with registerLiteralType() or
+     * registerDefaultTypes(), registerDefaultTypes() will be called automatically.
+     * 
+     * @param mixed|\Sdl\LiteralType\LiteralType $value The value to convert into a LiteralType
+     * @return \Sdl\LiteralType\LiteralType|null The LiteralType
+     */
     public static function createFromString($value)
     {
         if ($value instanceof LiteralType)
@@ -50,6 +130,26 @@ abstract class TypeFactory
             return $value;
         }
         
+        if (count(self::$types) == 0)
+        {
+            self::registerDefaultTypes();
+        }
+        
+        foreach(self::$types as $match=>$class)
+        {
+            if (preg_match($match, $value))
+            {
+                return $class::fromLiteral($value);
+            }
+        }
+
+        // This should be a typeexception!
+        error_log("No matching literal type for '{$value}'");
+        return null;
+        
+    }
+    
+    /*
         // TODO: Pay attention to quoting and parse non-quoted tokens
         //echo "[Parsing value string '{$value}']\n";
         if (($value == "true") || ($value == "yes") || ($value == "on"))
@@ -62,7 +162,6 @@ abstract class TypeFactory
         }
         
         
-        /*
         elseif ((preg_match(self::RE_BINARY, $value)) && ($raw))
         {
             //base64_decode(substr($value,1,strlen($value)-2))
@@ -73,7 +172,6 @@ abstract class TypeFactory
             $strval = substr($value, 1, strlen($value) - 2);
             return new self(stripcslashes($strval), self::LT_STRING, $value, $name);
         }
-        */
         
         if (preg_match(self::RE_STRING, $value))
         {
@@ -90,36 +188,7 @@ abstract class TypeFactory
             }
             return new SdlString(stripcslashes($strval));
         }
-        elseif (preg_match(self::RE_CHAR, $value))
-        {
-            return new SdlChar(stripcslashes(substr($value, 1, strlen($value) - 2)));
-        }
-        elseif (preg_match(self::RE_DECIMAL, $value))
-        {
-            return new SdlDecimal($value);
-        }
-        elseif (preg_match(self::RE_DFLOAT, $value))
-        {
-            return new SdlDouble($value);
-        }
-        elseif (preg_match(self::RE_FLOAT, $value))
-        {
-            return new SdlFloat(floatval($value));
-        }
-        elseif (preg_match(self::RE_INT, $value))
-        {
-            return new SdlInteger(intval($value));
-        }
-        elseif (preg_match(self::RE_LONGINT, $value))
-        {
-            return new SdlLong(intval($value));
-        }
-        elseif (preg_match(self::RE_DATE, $value))
-        {
-            return new SdlDate($value, true);
-        }
         
-        /*
         elseif (preg_match(self::RE_DATETIME, $value))
         {
             $match = null;
@@ -152,31 +221,46 @@ abstract class TypeFactory
             // echo "{$value} =>\n H: {$hours}\n M: {$minutes}\n S: {$seconds}\n ==> {$time}\n";
             return new SdlTypedValue($time, self::LT_TIMESPAN, $value, $name);
         }
-        */
 
         error_log("Warning: Value type could not be determined for '{$value}'\n");
         return new SdlString(stripcslashes($value));
         
     }
+    */
 
+    /**
+     * Return a LiteralType derived instance representing the provided PHP
+     * value.
+     * 
+     * If no types have been registered with registerLiteralType() or
+     * registerDefaultTypes(), registerDefaultTypes() will be called automatically.
+     * 
+     * @param mixed $var The PHP value to convert into a LiteralType
+     * @return \Sdl\LiteralType\LiteralType The LiteralValue
+     */
     public static function createFromPhpValue($var)
     {
-        if (is_float($var))
+
+        // Register default types if there are no types loaded.
+        if (count(self::$types) == 0)
         {
-            return new SdlFloat($var);
-        } elseif (is_double($var))
-        {
-            return new SdlDouble($var);
-        } elseif (is_int($var))
-        {
-            return new SdlInteger($var);
-        } elseif (is_bool($var))
-        {
-            return new SdlBoolean($var);
-        } elseif (is_string($var))
-        {
-            return new SdlString($var);
+            self::registerDefaultTypes();
         }
-    }
+        
+        // Get the var type and check the known types to find a match
+        $type = gettype($var);
+        if (array_key_exists($type,self::$php_types))
+        {
+            $class = self::$php_types[$type];
+            return new $class($var);
+        }
+        
+        // This should be a typeexception!
+        error_log("No matching literal type for type {$type}");
+        var_dump(self::$php_types);
+        return null;
+        
+     }
+ 
 
 }
