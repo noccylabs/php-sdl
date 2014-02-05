@@ -17,7 +17,23 @@ working yet.
 
 ## Usage
 
-You shouldn't really use this right now.
+You shouldn't really use this right now. Here is a brief summary of what is working,
+and what is not.
+
+| **Component**                 | **Description**              | **Status** |
+|:------------------------------|:-----------------------------|:----------:|
+| `Sdl\SdlTag`                  | Creating tag trees           | WORKING    |
+| `Sdl\SdlTag`                  | Encoding tags and children   | WORKING    |
+| `Sdl\SdlTag`                  | Encoding tags with comments  | WORKING    |
+| `Sdl\SdlTag`                  | Tree traversal               |            |
+| `Sdl\SdlTag`                  | Tests implemented            | PARTIAL    |
+| `Sdl\Parser\SdlParser`        | Parsing tags and nested tags | WORKING    |
+| `Sdl\Parser\SdlParser`        | Parsing tags with comments   |            |
+| `Sdl\Parser\SdlParser`        | Tests implemented            | PARTIAL    |
+| `Sdl\LiteralType\*Type`       | All types implemented        |            |
+| `Sdl\LiteralType\*Type`       | Tests implemented            | PARTIAL    |
+| `Sdl\Selector\SdlSelector`    | Selecting with expressions   |            |
+| `Sdl\Selector\SdlSelector`    | Tests implemented            |            |
 
 ## Examples
 
