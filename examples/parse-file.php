@@ -8,8 +8,6 @@ require_once __DIR__."/../vendor/autoload.php";
 
 use Sdl\Parser\SdlParser;
 
-$sdl = file_get_contents(__DIR__."/complex.sdl");
-
-$tag = SdlParser::parseString($sdl);
+$tag = SdlParser::parseFile(__DIR__."/complex.sdl");
 
 echo $tag->encode();

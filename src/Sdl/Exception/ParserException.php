@@ -20,7 +20,7 @@
 
 namespace Sdl\Exception;
 
-class ParserException extends \Exception
+class ParserException extends SdlException
 {    
     const ERR_INVALID_IDENTIFIER = 1;
     const ERR_NOT_IMPLEMENTED = 2;

@@ -18,32 +18,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Sdl\LiteralType;
+namespace Sdl\Exception;
 
-class SdlLong extends LiteralType
-{
-
-    private $value;
-    
-    public function setValue($value)
-    {
-        $this->value = (int)$value;
-    }
-    
-    public function getValue()
-    {
-        return $this->value;
-        
-    }
-    
-    public function setSdlLiteral($string)
-    {
-        $this->value = (int)$string;
-    }
-    
-    public function getSdlLiteral()
-    {
-        return $this->value.'l';
-    }
-    
+class SdlException extends \Exception
+{    
 }

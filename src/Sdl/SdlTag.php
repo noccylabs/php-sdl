@@ -127,6 +127,14 @@ class SdlTag implements ISdlElement
         $this->attributes[$attribute] = $value;
         return $this;
     }
+    
+    public function setAttributesFromArray(array $attributes)
+    {
+        foreach($attributes as $attr=>$value)
+        {
+            $this->setAttribute($attr,$value);
+        }
+    }
 
     /**
      * Remove an attribute from the tag

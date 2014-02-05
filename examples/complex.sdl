@@ -1,0 +1,7 @@
+package {
+    app:name "foo.foopackage"
+    depends {
+        "foo.barpackage" version="2.*"
+        "bar.bazpackage"
+    }
+}

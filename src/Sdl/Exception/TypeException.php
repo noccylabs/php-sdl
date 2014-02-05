@@ -25,7 +25,7 @@ namespace Sdl\Exception;
  *
  * @author noccy
  */
-class TypeException extends \Exception
+class TypeException extends SdlException
 {
     
 }

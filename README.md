@@ -1,6 +1,8 @@
 php-sdl 2.0
 ===========
 
+[![Build Status](https://travis-ci.org/noccylabs/php-sdl.png?branch=sdl2)](https://travis-ci.org/noccylabs/php-sdl)
+
 This is an implementation of Simple Declarative Language (SDL) for PHP. It has
 not thing to do with Simple Directmedia Layer.
 
@@ -11,14 +13,15 @@ working yet.
    each type is in its own folder.
  * The parser is broken still. 
  * Queries (SdlSelector) are not implemented yet.
+ * Not all unit tests have been created.
 
 ## Usage
 
-Install with composer; `noccylabs/sdl:2.0.*`
+You shouldn't really use this right now.
 
 ## Examples
 
-### Generating
+### Generating tag trees
 
 *IMPLEMENTED in php-sdl 2.0*
 
@@ -34,7 +37,7 @@ adding your children.
                 ->end();
         echo $tag->encode();
 
-### Children
+### Navigating children
 
 *Not yet implemented in php-sdl 2.0!*
 
@@ -55,10 +58,12 @@ adding your children.
 To parse a file, use the `Sdl\Parser\SdlParser` class. It offers a few different
 methods to parse content and return `Sdl\SdlTag` objects.
 
-*Not yet implemented in php-sdl 2.0!*
+*IMPLEMENTED but MISSING TESTS in php-sdl 2.0!*
 
         use Sdl\Parser\SdlParser;
+        // Parse a file
         $tag = SdlParser::parseFile("basic.sdl");
+        // Parse a string
         $tag = SdlParser::parseString($sdl_string);
 
 ### Queries
