@@ -21,18 +21,22 @@
 namespace Sdl\LiteralType;
 
 /**
- * SDL Integer: 32-bits signed
+ * SDL Date: Year, month and day.
  */
-class SdlInteger extends LiteralType
+class SdlTimespan extends LiteralType
 {
-
-    static $match_pattern = "/^[\+\-]{0,1}[0-9]*$/";
+    public static $match_pattern = "/^([0-9]{0,5}d\:){0,1}([0-9]{0,5}:){0,1}([0-9]{1,2}):([0-9]{1,2})(\.[0-9]{1,3})?$/";
     
     private $value;
     
     public function setValue($value)
     {
-        $this->value = (int)$value;
+        if (is_string($value)) 
+        {
+            $date = strtotime($value);
+        }
+        
+        $this->value = $date;
     }
     
     public function getValue()
@@ -43,12 +47,20 @@ class SdlInteger extends LiteralType
     
     public function setSdlLiteral($string)
     {
-        $this->value = (int)$string;
+        $match = null;
+        preg_match_all(self::$match_pattern, $string, $match);
+        list($days, $hours, $minutes, $seconds, $micro) = [(int) $match[1][0], (int) $match[2][0], (int) $match[3][0], (int) $match[4][0], (float) $match[5][0]];
+        $time = ($seconds) + ($minutes * 60) + ($hours * 60 * 60) + ($days * 60 * 60 * 24);
+        if ($micro)
+            $time += $micro;
+        // echo "{$value} =>\n H: {$hours}\n M: {$minutes}\n S: {$seconds}\n ==> {$time}\n";
+        
+        $this->value = $time;
     }
     
     public function getSdlLiteral()
     {
-        return $this->value;
+        return date("Y/m/d",$this->value);
     }
     
 }

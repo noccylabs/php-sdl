@@ -21,7 +21,7 @@
 namespace Sdl\LiteralType;
 
 /**
- * LiteralType for an SDL Date
+ * SDL Date: Year, month and day.
  */
 class SdlDate extends LiteralType
 {

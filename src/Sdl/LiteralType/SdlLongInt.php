@@ -20,9 +20,13 @@
 
 namespace Sdl\LiteralType;
 
-class SdlLong extends LiteralType
+/**
+ * SDL Long: 64-bits signed
+ */
+class SdlLongInt extends LiteralType
 {
-
+    public static $match_pattern = "/^[\+\-]{0,1}[\.0-9]*l$/i";
+    
     private $value;
     
     public function setValue($value)

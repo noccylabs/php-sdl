@@ -1,5 +1,4 @@
 <?php
-
 /* 
  * Copyright (C) 2014 NoccyLabs.info
  *
@@ -21,18 +20,17 @@
 namespace Sdl\LiteralType;
 
 /**
- * SDL Integer: 32-bits signed
+ * SDL String: Unicode string
  */
-class SdlInteger extends LiteralType
+class SdlRawString extends LiteralType
 {
-
-    static $match_pattern = "/^[\+\-]{0,1}[0-9]*$/";
+    public static $match_pattern = "/^`(.*)`$/ms";
     
     private $value;
     
     public function setValue($value)
     {
-        $this->value = (int)$value;
+        $this->value = (string)$value;
     }
     
     public function getValue()
@@ -41,14 +39,15 @@ class SdlInteger extends LiteralType
         
     }
     
-    public function setSdlLiteral($string)
+    public function setSdlLiteral($literal)
     {
-        $this->value = (int)$string;
+        $this->value = trim($literal,"`");
+        return $this;
     }
     
     public function getSdlLiteral()
     {
-        return $this->value;
+        return "`{$value}`";
     }
     
 }

@@ -21,9 +21,7 @@
 namespace Sdl\LiteralType;
 
 /**
- * LiteralType for a SDL Decimal
- * 
- * 
+ * SDL Decimal: 128+-bits signed
  */
 class SdlDecimal extends LiteralType
 {

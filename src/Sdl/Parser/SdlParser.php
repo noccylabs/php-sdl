@@ -22,11 +22,13 @@ namespace Sdl\Parser;
 
 use Sdl\LiteralType\TypeFactory;
 use Sdl\SdlTag;
+use Sdl\SdlUtils;
 
 class SdlParser
 {
     
     private $tokens = [];
+    private static $cache_provider;
     
     const CONTENT_TAG = "content";
     const ROOT_TAG = "root";
@@ -34,15 +36,31 @@ class SdlParser
     protected function __construct()
     {
     }
-    
+
+    /**
+     * Parse a file.
+     * 
+     * @param string $file The file to parse
+     * @return Sdl\SdlTag|null The document root tag
+     */
     public static function parseFile($file)
     {
         if (!file_exists($file))
         {
             return null;
         }
+        $cfile = pathinfo($file,PATHINFO_DIRNAME)."/.".basename($file).".cache";
+        if (file_exists($cfile))
+        {
+            if (filemtime($cfile)>=filemtime($file))
+            {
+                return unserialize(file_get_contents($cfile));
+            }
+        }
         $string = file_get_contents($file);
-        return self::parseString($string);
+        $parsed = self::parseString($string);
+        @file_put_contents($cfile, serialize($parsed));
+        return $parsed;
     }
     
     public static function parseString($string)
@@ -133,7 +151,7 @@ class SdlParser
             }
             elseif ($_[0]==null)
             {
-                if (self::isValidIdentifier($tok))
+                if (SdlUtils::isValidIdentifier($tok))
                 {
                     $_[0] = $tok;
                 }
@@ -159,17 +177,4 @@ class SdlParser
         }
     }
 
-    /**
-     * Check if the name is a valid identifier according to SDL 1.2
-     *
-     */
-    public static function isValidIdentifier($name) {
-        // From the SDL language guide: An SDL identifier starts with a unicode
-        // letter or underscore (_) followed by zero or more unicode letters,
-        // numbers, underscores (_), dashes (-), periods (.) and dollar signs
-        // ($).
-        return (preg_match("/^[_a-zA-Z]{1}[_\-\.\$a-zA-Z0-9]*/", $name));
-
-    }
-    
 }

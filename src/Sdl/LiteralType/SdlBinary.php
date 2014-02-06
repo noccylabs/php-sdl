@@ -1,5 +1,4 @@
 <?php
-
 /* 
  * Copyright (C) 2014 NoccyLabs.info
  *
@@ -20,7 +19,41 @@
 
 namespace Sdl\LiteralType;
 
+/**
+ * SDL Binary: Binary data (base64-encoded)
+ */
 class SdlBinary extends LiteralType
 {
+    public static $match_pattern = "/^\[(.*)\]$/m";
+    
+    private $value;
+    
+    public function setValue($value)
+    {
+        $this->value = (string)$value;
+    }
+    
+    public function getValue()
+    {
+        return $this->value;
+        
+    }
+    
+    public function setSdlLiteral($literal)
+    {
+        $buf = preg_replace("/\w\n\t/","",trim($literal,"[]"));
+        $this->value = base64_decode($buf);
+        return $this;
+    }
+    
+    public function getSdlLiteral()
+    {
+        $value = wordwrap((string)base64_encode($this->value), 75, "\n    ",true);
+        if (strpos($value,"\n")!==false)
+        {
+            return "[\n    ".$value."\n]";
+        }
+        return "[{$value}]";
+    }
     
 }

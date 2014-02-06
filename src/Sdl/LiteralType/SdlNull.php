@@ -20,6 +20,9 @@
 
 namespace Sdl\LiteralType;
 
+/**
+ * SDL Null: A null value
+ */
 class SdlNull extends LiteralType
 {
     

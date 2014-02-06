@@ -1,5 +1,4 @@
 <?php
-
 /* 
  * Copyright (C) 2014 NoccyLabs.info
  *
@@ -21,7 +20,7 @@
 namespace Sdl\LiteralType;
 
 /**
- * LiteralType for an SDL String
+ * SDL String: Unicode string
  */
 class SdlString extends LiteralType
 {
@@ -42,7 +41,19 @@ class SdlString extends LiteralType
     
     public function setSdlLiteral($literal)
     {
-        $this->value = trim($literal,"\"");
+        $strval = substr($literal, 1, strlen($literal) - 2);
+        if (strpos($strval, "\n") !== false)
+        {
+            $strs = explode("\n", $strval);
+            $stro = array_shift($strs);
+            foreach ($strs as $str)
+            {
+                $stro = rtrim(rtrim($stro), "\\") . ltrim($str);
+            }
+            $strval = $stro;
+        }
+        $value = stripcslashes($strval);
+        $this->value = $value;
         return $this;
     }
     

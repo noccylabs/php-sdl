@@ -61,7 +61,7 @@ class SdlTag implements ISdlElement
     public function setTagName($name)
     {
         // Check validity
-        if ($this->isValidIdentifier($name))
+        if (SdlUtils::isValidIdentifier($name))
         {
             // TODO: Extract namespace
             $this->tag_name = $name;
@@ -344,31 +344,6 @@ class SdlTag implements ISdlElement
     {
         $this->parent_tag = $parent;
         return $this;
-    }
-
-    /**
-     * Check if the specified identifier is valid per SDL 1.2
-     * 
-     * From the SDL language guide: An SDL identifier starts with a unicode
-     * letter or underscore (_) followed by zero or more unicode letters,
-     * numbers, underscores (_), dashes (-), periods (.) and dollar signs
-     * ($).
-     *
-     * @param type $identifier
-     * @return type
-     */
-    public function isValidIdentifier($identifier)
-    {
-        // Check if this identifier has a namespace, and if so check the parts
-        // independently and return true only if both are valid.
-        if (strpos($identifier,":")!==false)
-        {
-            list($namespace,$identifier) = explode(":",$identifier,2);
-            return ($this->isValidIdentifier($namespace) &&
-                    $this->isValidIdentifier($identifier));
-        }
-        // Check if the string is a valid identifier.
-        return (preg_match("/^[_a-zA-Z]{1}[_\-\.\$a-zA-Z0-9]*/", $identifier));
     }
     
     /**

@@ -21,7 +21,7 @@
 namespace Sdl\LiteralType;
 
 /**
- * LiteralType for a Boolean value.
+ * SDL Boolean: Boolean value
  * 
  * Accepted tokens: off, false, no (parsed as false) and on, true, yes (parsed
  * as true)

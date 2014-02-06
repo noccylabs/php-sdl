@@ -20,6 +20,9 @@
 
 namespace Sdl\LiteralType;
 
+/**
+ * SDL Float: 32-bits signed
+ */
 class SdlFloat extends LiteralType
 {
     

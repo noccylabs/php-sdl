@@ -21,7 +21,7 @@
 namespace Sdl\LiteralType;
 
 /**
- * LiteralType for an SDL Double
+ * SDL Double Float: 64-bits signed
  */
 class SdlDouble extends LiteralType
 {

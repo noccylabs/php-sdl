@@ -183,31 +183,6 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers Sdl\SdlTagNew::isValidIdentifier
-     * @todo   Implement testIsValidIdentifier().
-     */
-    public function testIsValidIdentifier()
-    {
-        $valid = [ 
-            "foo:bar", "Foo:Bar", "Foo:b.ar$", "foob-ar$", "_fizz"
-        ];
-        $invalid = [
-            "@foo", "~far", "!faz"
-        ];
-        
-        foreach($valid as $identifier)
-        {
-            $this->assertEquals(true,$this->object->isValidIdentifier($identifier));
-        }
-        
-        foreach($invalid as $identifier)
-        {
-            $this->assertEquals(false,$this->object->isValidIdentifier($identifier));
-        }
-        
-    }
-    
     public function testCreateComment()
     {
         $out = $this->object->createComment("Hello World")->encode();

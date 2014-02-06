@@ -20,8 +20,13 @@
 
 namespace Sdl\LiteralType;
 
+/**
+ * SDL Character: Unicode character
+ */
 class SdlCharacter extends LiteralType
 {
+
+    public static $match_pattern = "/^\'.\'$/";
     
     private $value;
     
@@ -38,7 +43,7 @@ class SdlCharacter extends LiteralType
     
     public function setSdlLiteral($literal)
     {
-        $this->value = trim($literal,"\"");
+        $this->value = trim($literal,"'");
         return $this;
     }
     
