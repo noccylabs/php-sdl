@@ -84,6 +84,7 @@ class SdlComment implements ISdlElement
      */
     public function encodeTag()
     {
-        return join(" ",[self::$comment_style,$this->getValue(0)]);
+        return self::$comment_style." ".
+                join("\n".self::$comment_style." ",explode("\n",$this->getValue(0)));
     }
 }

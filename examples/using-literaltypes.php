@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This example demonstrates directly using Sdl\LiteralType\Sdl* types to 
  * represent dates, booleans, integer, floats etc. The constructor for the

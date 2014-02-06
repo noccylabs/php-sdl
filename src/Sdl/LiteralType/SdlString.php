@@ -48,7 +48,8 @@ class SdlString extends LiteralType
     
     public function getSdlLiteral()
     {
-        return "\"{$this->value}\"";
+        $value = addcslashes($this->value,"\0..\37");
+        return "\"{$value}\"";
     }
     
 }

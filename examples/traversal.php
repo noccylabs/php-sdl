@@ -1,6 +1,9 @@
 <?php
-/* 
- * Copyright (C) 2014 noccy
+/*
+ * This example demonstrates how to traverse the node tree and work with child
+ * tags.
+ *
+ * -----
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,7 +24,7 @@ require_once __DIR__."/../vendor/autoload.php";
 
 use Sdl\Parser\SdlParser;
 
-$tag = SdlParser::parseFile(__DIR__."/complex.sdl");
+$tag = SdlParser::parseFile(__DIR__."/sdl/complex.sdl");
 
 $packages = $tag
         ->getChildrenByTagName("package");

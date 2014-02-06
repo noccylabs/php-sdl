@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This example demonstrates how it is possible to create tags and trees of tags
  * easily using symfony2-style fluid programming. All the setX() methods return
