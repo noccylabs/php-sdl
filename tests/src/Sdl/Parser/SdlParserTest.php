@@ -31,7 +31,7 @@ class SdlParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseFile()
     {
-        $file = __DIR__."/../../../../examples/complex.sdl";
+        $file = __DIR__."/../../../../examples/sdl/complex.sdl";
         $sdl = file_get_contents($file);
         $tag = SdlParser::parseFile($file);
         $this->assertInstanceOf("Sdl\\SdlTag", $tag);
@@ -43,7 +43,7 @@ class SdlParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseString()
     {
-        $file = __DIR__."/../../../../examples/complex.sdl";
+        $file = __DIR__."/../../../../examples/sdl/complex.sdl";
         $sdl = file_get_contents($file);
         $tag = SdlParser::parseString($sdl);
         $this->assertInstanceOf("Sdl\\SdlTag", $tag);
