@@ -1,5 +1,4 @@
 <?php
-
 /* 
  * Copyright (C) 2014 NoccyLabs.info
  *
@@ -18,33 +17,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Sdl\LiteralType;
+require_once __DIR__."/../vendor/autoload.php";
 
-/**
- * SDL Null: A null value
- */
-class SdlNull extends LiteralType
+use Sdl\Parser\SdlParser;
+use Sdl\Selector\SdlSelector;
+
+$tag = SdlParser::parseFile(__DIR__."/sdl/products.sdl");
+
+echo "Input:\n";
+echo $tag->encode();
+echo "\n";
+
+$tag_sel = new SdlSelector($tag);
+
+$expr = "/productcatalog/product[tag.attr('itemno')=='101-NAIL']";
+echo "Query: {$expr}\n";
+$deps = $tag_sel->query($expr);
+foreach($deps as $dep)
 {
-    
-    public static $match_pattern = "/^(null)$/i";
-    
-    public function setValue($value)
-    {
-    }
-    
-    public function getValue()
-    {
-        return null;
-        
-    }
-    
-    public function setSdlLiteral($string)
-    {
-    }
-    
-    public function getSdlLiteral()
-    {
-        return "null";
-    }
-    
+    echo $dep->encodeTag();
 }

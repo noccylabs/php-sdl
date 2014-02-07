@@ -51,6 +51,7 @@ abstract class TypeFactory
         self::registerLiteralType("Sdl\\LiteralType\\SdlString",   "string");
         self::registerLiteralType("Sdl\\LiteralType\\SdlInteger",  "integer");
         self::registerLiteralType("Sdl\\LiteralType\\SdlDouble",   "double");
+        self::registerLiteralType("Sdl\\LiteralType\\SdlNull",     "NULL");
         self::registerLiteralType("Sdl\\LiteralType\\SdlBinary");
         self::registerLiteralType("Sdl\\LiteralType\\SdlRawString");
         self::registerLiteralType("Sdl\\LiteralType\\SdlCharacter");

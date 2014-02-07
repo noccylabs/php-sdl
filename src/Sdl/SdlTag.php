@@ -358,7 +358,9 @@ class SdlTag implements ISdlElement
                 . ($this->tag_name)
                 ;
         foreach($this->values as $value) {
-            $string .= " {$value->getSdlLiteral()}";
+            if ($value) {
+                $string .= " {$value->getSdlLiteral()}";
+            }
         }
         foreach($this->attributes as $attribute=>$value) {
             $string .= " {$attribute}={$value->getSdlLiteral()}";

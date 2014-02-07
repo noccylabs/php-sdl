@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-
+        "symfony/expression-language": "v2.4.1"
     },
     "autoload": {
         "psr-0": { "": "src/" }

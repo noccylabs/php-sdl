@@ -1,7 +1,6 @@
 <?php
-
-/* 
- * Copyright (C) 2014 NoccyLabs.info
+/*
+ * Copyright (C) 2014 noccy
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,33 +17,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Sdl\LiteralType;
+namespace Sdl\Selector;
 
 /**
- * SDL Null: A null value
+ * Description of TagWrapper
+ *
+ * @author noccy
  */
-class SdlNull extends LiteralType
+class TagWrapper
 {
-    
-    public static $match_pattern = "/^(null)$/i";
-    
-    public function setValue($value)
+    private $tag;
+    public function __construct(\Sdl\SdlTag $tag)
     {
+        $this->tag = $tag;
     }
     
-    public function getValue()
+    public function attr($name)
     {
-        return null;
-        
-    }
-    
-    public function setSdlLiteral($string)
-    {
-    }
-    
-    public function getSdlLiteral()
-    {
-        return "null";
+        return $this->tag->getAttribute($name);
     }
     
 }

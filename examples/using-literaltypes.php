@@ -29,22 +29,39 @@ use Sdl\LiteralType\SdlDate;
 use Sdl\LiteralType\SdlBoolean;
 use Sdl\LiteralType\SdlFloat;
 use Sdl\LiteralType\SdlInteger;
+use Sdl\LiteralType\SdlBinary;
+use Sdl\LiteralType\SdlNull;
+
+function dump($v)
+{
+    if ($v instanceof \Sdl\LiteralType\LiteralType)
+    {
+        printf("LiteralType<%s>: %s\n", $v->getType(), $v->getSdlLiteral());
+    }
+    else
+    {
+        var_dump($v);
+    }
+}
 
 // Creating dates
-$date = new SdlDate("2014-01-01");
-printf("SdlDate: %s\n", $date->getSdlLiteral());
+dump(new SdlDate("2014-01-01"));
 
 // This will end up being true
-$bool1 = new SdlBoolean("no");
+dump(new SdlBoolean("no"));
 // this one is false
-$bool2 = SdlBoolean::fromLiteral("no");
+dump(SdlBoolean::fromLiteral("no"));
 
-printf("SdlBoolean: %s\n", $bool1->getSdlLiteral());
-printf("SdlBoolean: %s\n", $bool2->getSdlLiteral());
-
-// Floats can be cast to Ints
+// Floats can be cast to Ints. Note that SDL floats map to PHP doubles.
 $my_float = new SdlFloat(3.14);
+dump($my_float);
 $my_int = $my_float->castTo(new SdlInteger);
+dump($my_int);
 
-printf("SdlFloat: %s\n", $my_float->getSdlLiteral());
-printf("SdlInteger: %s\n", $my_int->getSdlLiteral());
+// Binary data
+dump(new SdlBinary("Hello World!"));
+$data = substr(file_get_contents(__FILE__),0,100);
+dump(new SdlBinary($data));
+
+// Nulls
+dump(new SdlNull);

@@ -1,0 +1,15 @@
+productcatalog {
+    product "Hammer" itemno="100-HAMMER" {
+        tags "hammer" "nail"
+        description:en "The perfect hammer for treating every problem like a nail!"
+        price:usd "19.99"
+        price:eur "22.49"
+    }
+    product "Nail" itemno="101-NAIL" {
+        tags "nail"
+        description:en "Generic nail for use with [100-HAMMER]. 50 per box."
+        package pcs=50
+        price:usd "4.19"
+        price:eur "5.55"
+    }
+}

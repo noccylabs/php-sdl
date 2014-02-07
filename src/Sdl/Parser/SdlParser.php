@@ -24,6 +24,9 @@ use Sdl\LiteralType\TypeFactory;
 use Sdl\SdlTag;
 use Sdl\SdlUtils;
 
+/**
+ * Parses SDL into tag trees
+ */
 class SdlParser
 {
     
