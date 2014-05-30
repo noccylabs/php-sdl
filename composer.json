@@ -14,5 +14,11 @@
     },
     "autoload": {
         "psr-0": { "": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev",
+            "dev-sdl2": "2.0.x-dev"
+        }
     }
 }
