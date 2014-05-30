@@ -18,7 +18,6 @@ The current quirks are:
 * Not all `LiteralType`s are implemented. This is easily done now however, as
   each type is in its own folder.
 * The parser is broken still. 
-* Queries (SdlSelector) are not implemented yet.
 * Not all unit tests have been created.
 * Comments can be generated, but not necessarily always parsed.
 * Numeric types may lose precision.
@@ -44,7 +43,7 @@ and what is not. Contributions and improvements are welcome.
 | `Sdl\LiteralType\TypeFactory` | Tests implemented            | PARTIAL    |
 | `Sdl\LiteralType\*Type`       | All types implemented        | PARTIAL    |
 | `Sdl\LiteralType\*Type`       | Tests implemented            | PARTIAL    |
-| `Sdl\Selector\SdlSelector`    | Selecting with expressions   |            |
+| `Sdl\Selector\SdlSelector`    | Selecting with expressions   | PARTIAL    |
 | `Sdl\Selector\SdlSelector`    | Tests implemented            |            |
 
 ### Functionality
@@ -82,8 +81,7 @@ This behaviour might change in the future.
 
 | **Format** | **Parser**                     | **10000x**    | **Calls/s**  |
 |:----------:|:-------------------------------|--------------:|-------------:|
-| SDL        | SdlParser::parseFile           |         1.18s |      8490.59 |
-| SDL        | SdlParser::parseString         |         3.83s |      2613.47 |
+| SDL        | SdlParser::parseString         |         8.83s |      1132.50 |
 | XML        | DomDocument::loadXml           |         0.43s |     23469.17 |
 | JSON       | json_decode                    |         0.26s |     38640.62 |
 | YAML       | yaml_parse_file                |         0.44s |     22738.22 |
@@ -193,25 +191,19 @@ with logical expressions.
 
 ### Queries
 
-*Not yet implemented in php-sdl 2.0!*
+Queries make use of Symfony's ExpressionLanguage component to allow complex queries:
 
         use Sdl\Parser\SdlParser;
         use Sdl\Selector\SdlSelector;
 
         // Load the data
-        $tag = SdlParser::parseFile("data.sdl");
-        $query = new SdlSelector($tag);
-        
-        // xpath like queries (returns array)
-        $tags = $query->query("/colors/color");
-        foreach($tags as $tag) {
-            // Write out the SDL of the tag
-            echo $tag->encode();
-        }
+        $tag = SdlParser::parseFile(__DIR__."/sdl/products.sdl");
+        // Create a new selector for the tag
+        $tag_sel = new SdlSelector($tag);
 
-        // same, for single tag
-        $single_tag = $query->queryOne("/colors/color[@name=red]");
-        printf("Color: %s, Value: %s\n", $single_tag->name, $single_tag[0]);
+        // Execute the query
+        $expr = "/productcatalog/product[tag.attr('itemno')=='101-NAIL']";
+        $item = $tag_sel->query($expr);
 
 ## Development
 
