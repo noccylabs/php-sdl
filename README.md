@@ -54,7 +54,7 @@ and what is not. Contributions and improvements are welcome.
 | Encoding tag trees into SDL                                  | WORKING    |
 | Parsing SDL into tag trees                                   | PARTIAL    |
 | Navigating the tag tree                                      | WORKING    |
-| Selecting tags with expressions                              |            |
+| Selecting tags with expressions                              | PARTIAL    |
 | Create LiteralTypes from native PHP variable types           | WORKING    |
 | Create LiteralTypes from SDL tokens                          | PARTIAL    |
 | Access LiteralTypes as native PHP values                     | PARTIAL    |
