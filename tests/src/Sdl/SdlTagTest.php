@@ -59,8 +59,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAttribute()
     {
-        $this->object->setAttribute("foo","bar");
-        $this->assertEquals($this->object->getAttribute("foo"),"bar");
+        $this->assertEquals($this->object->getAttribute("foo"),null);
     }
 
     /**
@@ -70,9 +69,8 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     public function testSetAttribute()
     {
         // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->object->setAttribute("foo","baz");
+        $this->assertEquals($this->object->getAttribute("foo"),"baz");
     }
 
     /**
@@ -129,10 +127,11 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddChild()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+        $child = new SdlTag("tag2");
+        $nod->addChild($child);
+
+        $this->assertEquals($child->getParent(), $nod);
     }
 
     /**
@@ -141,10 +140,11 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateChild()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+        $child = $nod->createChild("tag2");
+
+        $this->assertNotNull($child);
+        $this->assertNotEquals($child, $nod);
     }
 
     /**
@@ -153,10 +153,10 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
      */
     public function testEnd()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+        $child = $nod->createChild("tag2");
+
+        $this->assertEquals($child->end(), $nod);
     }
 
     /**
@@ -165,10 +165,9 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParent()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+
+        $this->assertEquals($nod->getParent(), null);
     }
 
     /**
@@ -177,14 +176,17 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetParent()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+        $pnod = new SdlTag("tag2");
+
+        $this->assertEquals($nod->getParent(), null);
+        $nod->setParent($pnod);
+        $this->assertEquals($nod->getParent(), $pnod);
     }
 
     public function testCreateComment()
     {
+        SdlComment::setCommentStyle(SdlComment::STYLE_HASH);
         $out = $this->object->createComment("Hello World")->encode();
         $this->assertEquals("# Hello World\n", $out);
     }

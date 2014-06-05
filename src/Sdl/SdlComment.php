@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2014 noccy
+ * Copyright (C) 2014 NoccyLabs.info
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ class SdlComment implements ISdlElement
     const STYLE_DASH = "--";
     
     private $value;
-    private static $comment_style = self::STYLE_HASH;
+    private static $comment_style;
     
     /**
      * 
@@ -84,7 +84,11 @@ class SdlComment implements ISdlElement
      */
     public function encodeTag()
     {
-        return self::$comment_style." ".
+        if (empty(self::$comment_style)) {
+            self::$comment_style = self::STYLE_HASH;
+        }
+        $enc = self::$comment_style." ".
                 join("\n".self::$comment_style." ",explode("\n",$this->getValue(0)));
+        return $enc;
     }
 }

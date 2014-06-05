@@ -37,10 +37,7 @@ class SdlCommentTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTagName()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals($this->object->getTagName(), "@COMMENT");
     }
 
     /**
@@ -49,10 +46,16 @@ class SdlCommentTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetCommentStyle()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+
+        foreach( array(SdlComment::STYLE_PHP, SdlComment::STYLE_HASH, SdlComment::STYLE_DASH) as $style) {
+            SdlComment::setCommentStyle($style);
+            $comment = new SdlComment();
+            $comment->setValue("Hello World");
+            $sdl = $comment->encodeTag();
+            $expect = $style." Hello World";
+            $this->assertEquals($expect, $sdl);
+        }
+
     }
 
     /**
