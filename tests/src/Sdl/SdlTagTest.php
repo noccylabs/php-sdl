@@ -32,7 +32,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sdl\SdlTagNew::setTagName
+     * @covers Sdl\SdlTag::setTagName
      * @todo   Implement testSetTagName().
      */
     public function testSetTagName()
@@ -43,7 +43,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sdl\SdlTagNew::hasAttribute
+     * @covers Sdl\SdlTag::hasAttribute
      * @todo   Implement testHasAttribute().
      */
     public function testHasAttribute()
@@ -54,7 +54,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sdl\SdlTagNew::getAttribute
+     * @covers Sdl\SdlTag::getAttribute
      * @todo   Implement testGetAttribute().
      */
     public function testGetAttribute()
@@ -63,66 +63,73 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sdl\SdlTagNew::setAttribute
+     * @covers Sdl\SdlTag::setAttribute
      * @todo   Implement testSetAttribute().
      */
     public function testSetAttribute()
     {
-        // Remove the following lines when you implement this test.
-        $this->object->setAttribute("foo","baz");
-        $this->assertEquals($this->object->getAttribute("foo"),"baz");
+        $nod = new SdlTag("tag1");
+
+        $nod->setAttribute("foo","baz");
+        $this->assertEquals("baz", $nod->getAttribute("foo"));
     }
 
     /**
-     * @covers Sdl\SdlTagNew::setValue
+     * @covers Sdl\SdlTag::setValue
      * @todo   Implement testSetValue().
      */
     public function testSetValue()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+
+        $nod->setValue("Hello");
+        $this->assertEquals("Hello", $nod->getValue());
+        $this->assertEquals("Hello", $nod->getValue(0));
     }
 
     /**
-     * @covers Sdl\SdlTagNew::setValuesFromArray
+     * @covers Sdl\SdlTag::setValuesFromArray
      * @todo   Implement testSetValuesFromArray().
      */
     public function testSetValuesFromArray()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+
+        $arr = array("Hello", "World");
+        $nod->setValuesFromArray($arr);
+        $this->assertEquals("Hello", $nod->getValue());
+        $this->assertEquals("Hello", $nod->getValue(0));
+        $this->assertEquals("World", $nod->getValue(1));
     }
 
     /**
-     * @covers Sdl\SdlTagNew::hasChildren
+     * @covers Sdl\SdlTag::hasChildren
      * @todo   Implement testHasChildren().
      */
     public function testHasChildren()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+        $child = new SdlTag("tag2");
+        $nod->addChild($child);
+        
+        $this->assertTrue($nod->hasChildren());
     }
 
     /**
-     * @covers Sdl\SdlTagNew::getChildren
+     * @covers Sdl\SdlTag::getChildren
      * @todo   Implement testGetChildren().
      */
     public function testGetChildren()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $nod = new SdlTag("tag1");
+        $child = new SdlTag("tag2");
+        $nod->addChild($child);
+        
+        $this->assertEquals(array($child), $nod->getChildren());
     }
 
     /**
-     * @covers Sdl\SdlTagNew::addChild
+     * @covers Sdl\SdlTag::addChild
      * @todo   Implement testAddChild().
      */
     public function testAddChild()
@@ -135,7 +142,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sdl\SdlTagNew::createChild
+     * @covers Sdl\SdlTag::createChild
      * @todo   Implement testCreateChild().
      */
     public function testCreateChild()
@@ -148,7 +155,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sdl\SdlTagNew::end
+     * @covers Sdl\SdlTag::end
      * @todo   Implement testEnd().
      */
     public function testEnd()
@@ -160,7 +167,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sdl\SdlTagNew::getParent
+     * @covers Sdl\SdlTag::getParent
      * @todo   Implement testGetParent().
      */
     public function testGetParent()
@@ -171,7 +178,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sdl\SdlTagNew::setParent
+     * @covers Sdl\SdlTag::setParent
      * @todo   Implement testSetParent().
      */
     public function testSetParent()
@@ -192,7 +199,7 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @covers Sdl\SdlTagNew::encode
+     * @covers Sdl\SdlTag::encode
      * @todo   Implement testEncode().
      */
     public function testEncode()

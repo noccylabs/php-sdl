@@ -236,7 +236,7 @@ class SdlTag implements ISdlElement
      * 
      * @return array Array of child tags
      */
-    public function getAllChildren()
+    public function getChildren()
     {
         return (array)$this->children;
     }

@@ -42,6 +42,9 @@ class SdlCommentTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Sdl\SdlComment::setCommentStyle
+     * @covers Sdl\SdlComment::setValue
+     * @covers Sdl\SdlComment::getValue
+     * @covers Sdl\SdlComment::encodeTag
      * @todo   Implement testSetCommentStyle().
      */
     public function testSetCommentStyle()
@@ -57,41 +60,4 @@ class SdlCommentTest extends \PHPUnit_Framework_TestCase
         }
 
     }
-
-    /**
-     * @covers Sdl\SdlComment::setValue
-     * @todo   Implement testSetValue().
-     */
-    public function testSetValue()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Sdl\SdlComment::getValue
-     * @todo   Implement testGetValue().
-     */
-    public function testGetValue()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Sdl\SdlComment::encodeTag
-     * @todo   Implement testEncodeTag().
-     */
-    public function testEncodeTag()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
 }

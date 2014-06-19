@@ -28,6 +28,7 @@ class SdlParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Sdl\Parser\SdlParser::parseFile
+     * @covers Sdl\Parser\SdlParser::parseFromTokenStream
      */
     public function testParseFile()
     {
@@ -40,6 +41,7 @@ class SdlParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Sdl\Parser\SdlParser::parseString
+     * @covers Sdl\Parser\SdlParser::parseFromTokenStream
      */
     public function testParseString()
     {
@@ -48,30 +50,6 @@ class SdlParserTest extends \PHPUnit_Framework_TestCase
         $tag = SdlParser::parseString($sdl);
         $this->assertInstanceOf("Sdl\\SdlTag", $tag);
         $this->assertEquals($sdl,$tag->encode());
-    }
-
-    /**
-     * @covers Sdl\Parser\SdlParser::parseFromTokenStream
-     * @todo   Implement testParseFromTokenStream().
-     */
-    public function testParseFromTokenStream()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Sdl\Parser\SdlParser::isValidIdentifier
-     * @todo   Implement testIsValidIdentifier().
-     */
-    public function testIsValidIdentifier()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
     }
 
 }
