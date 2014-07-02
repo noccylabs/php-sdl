@@ -99,7 +99,7 @@ class SdlSelector
         // Find item
         $matcher = new TagMatcher($select);
         $result = [];
-        foreach($context->getAllChildren() as $tag)
+        foreach($context->getChildren() as $tag)
         {
             if ($matcher->match($tag))
             {

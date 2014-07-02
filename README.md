@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/noccylabs/php-sdl.svg?branch=sdl2)](https://travis-ci.org/noccylabs/php-sdl)
+
 php-sdl 2.0
 ===========
 
