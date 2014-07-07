@@ -109,6 +109,15 @@ class SdlTag implements ISdlElement
         return null;
     }
     
+    public function getAttributeStrings()
+    {
+        $ret = array();
+        foreach($this->attributes as $name=>$attribute) {
+            $ret[$name] = $attribute->getValue();
+        }
+        return $ret;
+    }
+    
     /**
      * Create or update an attribute with a new value
      * 
@@ -250,12 +259,13 @@ class SdlTag implements ISdlElement
      */
     public function getChildrenByTagName($tagname)
     {
-        return (array)array_map(function($tag) use($tagname) {
+        $ret = (array)array_map(function($tag) use($tagname) {
             if ($tag->getTagName() == $tagname)
             {
                 return $tag;
             }
         }, $this->children);
+        return array_filter($ret);
     }
     
     /**
@@ -384,6 +394,7 @@ class SdlTag implements ISdlElement
      */
     public function encode()
     {
+        $string = null;
         if (count($this->children)>0)
         {
             $string = "";

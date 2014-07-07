@@ -21,6 +21,7 @@
 namespace Sdl\LiteralType;
 
 use Sdl\Parser\ParserToken;
+use Sdl\Exception\TypeException;
 
 /**
  * The TypeFactory is used to convert tokens (raw strings, with or without
@@ -126,10 +127,8 @@ abstract class TypeFactory
                 return $class::fromLiteral($value);
             }
         }
-
-        // This should be a typeexception!
-        error_log("No matching literal type for '{$value}'");
-        return null;
+        
+        throw new TypeException("No matching literal type for '{$value}'");
         
     }
     
@@ -160,10 +159,8 @@ abstract class TypeFactory
             return new $class($var);
         }
         
-        // This should be a typeexception!
-        error_log("No matching literal type for type {$type}");
-        var_dump(self::$php_types);
-        return null;
+        throw new TypeException("No matching literal type for type '{$type}'");
+        //var_dump(self::$php_types);
         
      }
  
