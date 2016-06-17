@@ -48,21 +48,12 @@ class SdlParser
      */
     public static function parseFile($file)
     {
-        if (!file_exists($file))
-        {
-            return null;
+        if (!file_exists($file)) {
+            throw new FileNotFoundException("{$file} not found");
         }
-        $cfile = pathinfo($file,PATHINFO_DIRNAME)."/.".basename($file).".cache";
-        if (file_exists($cfile))
-        {
-            if (filemtime($cfile)>=filemtime($file))
-            {
-                return unserialize(file_get_contents($cfile));
-            }
-        }
+
         $string = file_get_contents($file);
         $parsed = self::parseString($string);
-        @file_put_contents($cfile, serialize($parsed));
         return $parsed;
     }
     
