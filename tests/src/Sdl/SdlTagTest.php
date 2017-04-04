@@ -218,4 +218,24 @@ class SdlTagTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect,$out);
     }
 
+    /**
+     * @covers Sdl\SdlTag::encode
+     * @todo   Implement testEncode().
+     */
+    public function testReplaceChild()
+    {
+        $root = new SdlTag();
+        $tag1 = new SdlTag("hello");
+        $tag2 = new SdlTag("fail");
+        $tag3 = new SdlTag("world");
+
+        $root->addChild($tag1);
+        $root->addChild($tag2);
+        $this->assertTrue($root->replaceChild($tag2, $tag3));
+
+        $children = $root->getChildren();
+        $this->assertEquals($children[1], $tag3);
+
+    }
+
 }

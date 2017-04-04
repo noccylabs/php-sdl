@@ -265,7 +265,25 @@ class SdlTag implements ISdlElement
                 return $tag;
             }
         }, $this->children);
-        return array_filter($ret);
+        return array_values(array_filter($ret));
+    }
+    
+    /**
+     * Replace a child
+     *
+     * @param SdlTag $find The tag to replace
+     * @param SdlTag $replace The substitution tag
+     * @return bool Returns true if a tag was found and replaced
+     */
+    public function replaceChild(SdlTag $find, SdlTag $replace)
+    {
+        foreach ($this->children as $index => $tag) {
+            if ($tag === $find) {
+                $this->children[$index] = $replace;
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
