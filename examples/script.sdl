@@ -1,0 +1,36 @@
+
+
+//
+//  Variables are set using set, and escaped in values and attributes using %{..}
+//
+set name="alice"
+echo "Hello, %{name}"
+
+//
+//  As if uses test(), you can pass variables as names.
+//
+if "name=='alice'" {
+    echo "Your name is alice"
+}
+
+//
+//  Each iterates over all parameters, and sets them one at a time in the specified
+//  variable before evaluating the body.
+//
+each "bob" "eve" "zelda" as="name" {
+    printf "Hello, %s\n" "%{name}"
+}
+
+//
+//  While uses test(), so pass your variables as names. If you pass "%{x}<5" instead
+//  of "x<5", the loop will never complete since the evaluated expression becomes "0<5"
+//  This is as values are processed before the while handler is called.
+//
+set x=0
+while "x < 5" {
+    echo "%{x}..."
+    //  We can use eval to set using expressions
+    eval x="x+1"
+}
+
+hello "World"
